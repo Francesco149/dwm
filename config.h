@@ -72,7 +72,6 @@ static const char *termcmd[]  = { "uxterm", NULL };
 const Arg passcmd = SHCMD(SELTYPEFLD("password") " || " TYPE("$(echo \"$pass\" | head -n 1)"));
 const Arg usercmd = SHCMD(SELTYPEFLD("username"));
 
-/* uploading screenshots to 0x0.st */
 #define UPLOAD \
   "notify-send \"Uploading $(basename \"$fil\") ...\" &&" \
   "json=$(mktemp) &&" \
@@ -90,6 +89,9 @@ const Arg uploadclipcmd = SHCMD(
   "fil=\"${SCREENSHOTS_DIR:-$HOME/screenshots}/clip-$(date '+%y%m%d-%H%M-%S').png\" &&"
   "xclip -selection clipboard -t image/png -o > \"$fil\" &&"
   UPLOAD
+);
+const Arg sscmd = SHCMD(
+  "maim ${SCREENSHOTS_DIR:-$HOME/screenshots}/pic-full-$(date '+%y%m%d-%H%M-%S').png"
 );
 
 static Key keys[] = {
@@ -124,6 +126,7 @@ static Key keys[] = {
 	{ ControlMask|ShiftMask,        XK_4,      spawn,          uploadpiccmd},
 	{ ControlMask|ShiftMask,        XK_5,      spawn,          uploadclipcmd},
 	{ MODKEY|ShiftMask,             XK_Return, togglescratch,  {.ui = 0} },
+	{ 0,                            XK_Print,  spawn,          sscmd },
 };
 
 /* button definitions */
