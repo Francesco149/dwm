@@ -12,6 +12,16 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { "#eeeeee", "#222222", "#770000" },
 };
 
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"uxterm", "-class", "spterm", "-geometry", "120x34", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spterm",      spcmd1},
+};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -20,8 +30,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class            instance    title       tags mask     isfloating   monitor */
-	{ "brave-browser",  NULL,       NULL,       1 << 1,       0,           -1 },
+	/* class            instance    title       tags mask     flt term noswal mon */
+	{ "brave-browser",  NULL,       NULL,       1 << 1,       0,  0,   0,     -1 },
+	{ NULL,             "UXTerm",   NULL,       0,            0,  1,   0,     -1 },
+	{ "spterm",   NULL,       NULL,       	    SPTAG(0),     1,  1,   0,     -1 },
 };
 
 /* layout(s) */
@@ -111,6 +123,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_p,      spawn,          passcmd },
 	{ ControlMask|ShiftMask,        XK_4,      spawn,          uploadpiccmd},
 	{ ControlMask|ShiftMask,        XK_5,      spawn,          uploadclipcmd},
+	{ MODKEY|ShiftMask,             XK_Return, togglescratch,  {.ui = 0} },
 };
 
 /* button definitions */
