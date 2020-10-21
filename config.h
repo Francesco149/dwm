@@ -42,7 +42,7 @@ static const Rule rules[] = {
 	/* class            instance    title       tags mask     flt term noswal mon */
 	{ "brave-browser",  NULL,       NULL,       1 << 1,       0,  0,   0,     -1 },
 	{ NULL,             "UXTerm",   NULL,       0,            0,  1,   0,     -1 },
-	{ "spterm",   NULL,       NULL,       	    SPTAG(0),     1,  1,   0,     -1 },
+	{ "spterm",         NULL,       NULL,       SPTAG(0),     1,  1,   0,     -1 },
 };
 
 /* layout(s) */
