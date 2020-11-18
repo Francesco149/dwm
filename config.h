@@ -72,15 +72,6 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { "uxterm", NULL };
 
-/* password manager stuff */
-#define SELPASS "gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -f"
-#define TYPE(txt) "(t=\"" txt "\" && [ \"$t\" ] && xdotool type --clearmodifiers \"$t\")"
-#define SELTYPE(filter) "pass=\"$(" SELPASS ")\" && " TYPE("$(echo \"$pass\" | " filter ")")
-#define SELTYPEFLD(fld) SELTYPE("grep -i '^" fld ":' | awk -F: '{print $2}' | sed 's/^[ ]*//g'")
-/* stupid gopass did a useless breaking change on the password format so now I have to supp both */
-const Arg passcmd = SHCMD(SELTYPEFLD("password") " || " TYPE("$(echo \"$pass\" | head -n 1)"));
-const Arg usercmd = SHCMD(SELTYPEFLD("username"));
-
 #define UPLOAD \
   "notify-send \"Uploading $(basename \"$fil\") ...\" &&" \
   "json=$(mktemp) &&" \
@@ -130,8 +121,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_u,      spawn,          usercmd },
-	{ MODKEY|ShiftMask,             XK_p,      spawn,          passcmd },
+	{ MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("passmenu") },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          SHCMD("passmenu --type") },
 	{ ControlMask|ShiftMask,        XK_4,      spawn,          uploadpiccmd},
 	{ ControlMask|ShiftMask,        XK_5,      spawn,          uploadclipcmd},
 	{ MODKEY|ShiftMask,             XK_Return, togglescratch,  {.ui = 0} },
